@@ -4,3 +4,4 @@ PyPDF2
 openai
 playwright
 requests-html
+lxml_html_clean
