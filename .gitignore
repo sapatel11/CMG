@@ -1,0 +1,50 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+*.pyo
+*.pyd
+*.pkl
+
+# --- Virtual Environments ---
+.venv/
+cmg/
+ENV/
+env/
+*.env
+
+# --- Jupyter / IPython ---
+.ipynb_checkpoints/
+*.ipynb
+
+# --- Streamlit ---
+.streamlit/secrets.toml
+.streamlit/config.toml
+
+# --- Logs ---
+*.log
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- IDEs ---
+.vscode/
+.idea/
+
+# --- Model files (gguf, bin, etc.) ---
+*.gguf
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# --- Node / Playwright (if used) ---
+node_modules/
+playwright/.cache/
+
+# --- Local data ---
+repos.json
+resume_SDE.pdf
+resume_ML.pdf
