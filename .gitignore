@@ -44,7 +44,3 @@ Thumbs.db
 node_modules/
 playwright/.cache/
 
-# --- Local data ---
-repos.json
-resume_SDE.pdf
-resume_ML.pdf
