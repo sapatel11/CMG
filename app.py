@@ -6,7 +6,7 @@ import PyPDF2
 from groq import Groq
 import asyncio
 import sys
-from requests_html import HTMLSession
+from bs4 import BeautifulSoup
 
 # Windows fix for Playwright subprocess issues
 if sys.platform.startswith("win"):
@@ -51,45 +51,15 @@ def load_repos(role):
         })
     return repos
 
-# Try Playwright scraper
-def scrape_with_playwright(url):
-    try:
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            page.goto(url, timeout=30000)
-            page.wait_for_timeout(3000)  # wait 3s for JS
-            text = page.inner_text("body")
-            browser.close()
-            return text if text else None
-    except Exception:
-        return None
-
-# Fallback to requests-html
-def scrape_with_requests_html(url):
-    try:
-        session = HTMLSession()
-        r = session.get(url)
-
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        r.html.render(timeout=20, sleep=2)
-
-        text = "\n".join([p.text for p in r.html.find("p, li, div") if p.text.strip()])
-        return text[:4000] if text else None
-    except Exception:
-        return None
-
 # Combined scraper
 def scrape_job_description(url):
-    jd = scrape_with_playwright(url)
-    if jd:
-        return jd
-    jd = scrape_with_requests_html(url)
-    if jd:
-        return jd
-    return "Error: Could not fetch job description. Please paste it manually."
+    try:
+        r = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"})
+        soup = BeautifulSoup(r.text, "html.parser")
+        text = "\n".join([p.get_text() for p in soup.find_all(["p", "li", "div"])])
+        return text[:4000] if text else "Error: Could not extract job description."
+    except Exception as e:
+        return f"Error: {e}"
 
 # Generate email using Ollama
 def generate_email(resume, job_desc, repos, role):

@@ -5,3 +5,4 @@ groq
 playwright
 requests-html
 lxml_html_clean
+types-requests
