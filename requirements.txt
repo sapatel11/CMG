@@ -1,7 +1,7 @@
 streamlit
 requests
 PyPDF2
-openai
+groq
 playwright
 requests-html
 lxml_html_clean

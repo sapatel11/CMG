@@ -3,7 +3,7 @@ import requests
 import json
 import os
 import PyPDF2
-from openai import OpenAI
+from groq import Groq
 import asyncio
 import sys
 from requests_html import HTMLSession
@@ -13,7 +13,8 @@ if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
 # Connect to Ollama server (make sure `ollama serve` is running)
-client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+MODEL = "llama-3.1-8b-instant"
 
 # Resumes (PDFs)
 RESUME_MAP = {
@@ -122,11 +123,12 @@ Now draft the final cold email (≤170 words):
 """
 
     response = client.chat.completions.create(
-        model="llama3:8b",
+        model=MODEL,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,
         max_tokens=600,
     )
+
     return response.choices[0].message.content.strip()
 
 # ---------------- Streamlit UI ---------------- #
