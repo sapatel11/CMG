@@ -5,7 +5,6 @@ __pycache__/
 *.egg
 *.pyo
 *.pyd
-*.pkl
 
 # --- Virtual Environments ---
 .venv/
