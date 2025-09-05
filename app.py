@@ -12,7 +12,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.docstore.document import Document
 from sentence_transformers import SentenceTransformer
-from langchain.embeddings.base import Embeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import re
 
 def safe_json_parse(text):
@@ -47,18 +47,20 @@ RESUME_MAP = {
 
 # ---------------- Custom Embeddings ---------------- #
 
-class LocalHFEmbeddings(Embeddings):
-    def __init__(self, model_name="sentence-transformers/all-MiniLM-L6-v2"):
-        self.model = SentenceTransformer(model_name, device="cpu")  # Force CPU
+# class LocalHFEmbeddings(Embeddings):
+#     def __init__(self, model_name="sentence-transformers/all-MiniLM-L6-v2"):
+#         self.model = SentenceTransformer(model_name, device="cpu")  # Force CPU
 
-    def embed_documents(self, texts):
-        return self.model.encode(texts, convert_to_numpy=True).tolist()
+#     def embed_documents(self, texts):
+#         return self.model.encode(texts, convert_to_numpy=True).tolist()
 
-    def embed_query(self, text):
-        return self.model.encode([text], convert_to_numpy=True)[0].tolist()
+#     def embed_query(self, text):
+#         return self.model.encode([text], convert_to_numpy=True)[0].tolist()
 
-embeddings = LocalHFEmbeddings()
-
+embeddings = HuggingFaceEmbeddings(
+    model_name="sentence-transformers/all-MiniLM-L6-v2",
+    model_kwargs={"device": "cpu"}
+)
 # ---------------- Helpers ---------------- #
 
 def extract_text_from_pdf(path):
