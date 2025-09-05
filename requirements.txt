@@ -1,8 +1,10 @@
 streamlit
 requests
 PyPDF2
-groq
-playwright
-requests-html
 lxml_html_clean
 types-requests
+langchain
+langchain-community
+faiss-cpu
+openai
+sentence-transformers
